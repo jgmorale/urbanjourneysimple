@@ -2,32 +2,29 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity(name = "ruta")
 public class Ruta {
+	@Id
+	// Generar automaticamente
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	// Una columna de la tabla
+	@Column(name = "nombre")
 	private String nombre;
+	@Column(name = "num_lugares")
 	private int numLugares;
+	@Column(name = "duracion")
 	private int duracion;
+	@Column(name = "distancia")
 	private int distancia;
-	private List<Lugar> lugares;
-	private List<Trayectoria> trayectorias;
 	
 	public Ruta() {}
-		
-	public List<Lugar> getLugares() {
-		return lugares;
-	}
-
-	public void setLugares(List<Lugar> lugares) {
-		this.lugares = lugares;
-	}
-
-	public List<Trayectoria> getTrayectorias() {
-		return trayectorias;
-	}
-
-	public void setTrayectorias(List<Trayectoria> trayectorias) {
-		this.trayectorias = trayectorias;
-	}
 
 	public int getId() {
 		return id;
@@ -67,38 +64,6 @@ public class Ruta {
 
 	public void setDistancia(int distancia) {
 		this.distancia = distancia;
-	}
-	
-	public void calcularTiempoRuta() {
-		int tiempo = 0;
-		for(Trayectoria t: this.trayectorias) {
-			tiempo+=t.getTiempo();
-		}
-		for(Lugar l: this.lugares) {
-			tiempo+=l.getTiempoUsuario();
-		}
-		
-		this.setDuracion(tiempo);
-	}
-	
-	public void calcularDistanciaRuta() {
-		int distancia = 0;
-		for(Trayectoria t: this.trayectorias) {
-			distancia+=t.getDistancia();
-		}
-		this.setDistancia(distancia);
-	}
-	
-	public void agregarTrayectoria(Trayectoria trayectoria) {
-		this.trayectorias.add(trayectoria);
-	}
-	
-	public void agregarLugar(Lugar lugar) {
-		this.lugares.add(lugar);
-	}
-	
-	public void actualizarRuta() {
-		
 	}
 
 }
