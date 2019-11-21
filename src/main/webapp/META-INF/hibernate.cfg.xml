@@ -13,5 +13,7 @@
 		
 		<!-- Mapeo de todos las clases que son entidad -->
 		<mapping class="models.Ruta"/>
+		<mapping class="models.Lugar"/>
+		<mapping class="models.Trayectoria"/>
 	</session-factory>
 </hibernate-configuration>

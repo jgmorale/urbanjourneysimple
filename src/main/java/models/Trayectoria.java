@@ -1,11 +1,26 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity(name = "trayectoria")
 public class Trayectoria {
+	@Id
+	// Generar automaticamente
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "id_ruta")
 	private int idRuta;
+	@Column(name = "origen")
 	private String origen;
+	@Column(name = "destino")
 	private String destino;
+	@Column(name = "tiempo")
 	private int tiempo;
+	@Column(name = "distancia")
 	private int distancia;
 	
 	public Trayectoria() {}

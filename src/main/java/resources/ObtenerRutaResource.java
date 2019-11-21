@@ -1,6 +1,5 @@
 package resources;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,10 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import models.Lugar;
 import models.Ruta;
+import models.RutaWrapper;
+import models.Trayectoria;
 
 @Path("rutaguardada")
 public class ObtenerRutaResource {
@@ -44,6 +46,9 @@ public class ObtenerRutaResource {
 		SessionFactory sessionFactory = null;
 		Session session = null;
 		List<Ruta> rutas = null;
+		List<Lugar> lugares = null;
+		List<Trayectoria> trayectorias = null;
+		RutaWrapper ruta = new RutaWrapper();
 		try {
 			
 			StandardServiceRegistry registry = 
@@ -56,9 +61,23 @@ public class ObtenerRutaResource {
 			
 			session = sessionFactory.openSession();
 			
-			Query query = session.createQuery("FROM ruta where id = :idRuta", Ruta.class);
-			query.setParameter("idRuta", idRuta);
-			rutas = query.getResultList();
+			Query queryRt = session.createQuery("FROM ruta where id = :idRuta", Ruta.class);
+			queryRt.setParameter("idRuta", idRuta);
+			rutas = queryRt.getResultList();
+			
+			ruta.setRuta(rutas.get(0));
+			
+			Query queryPl = session.createQuery("FROM lugar where id_ruta = :idRuta", Lugar.class);
+			queryPl.setParameter("idRuta", idRuta);
+			lugares = queryPl.getResultList();
+			
+			ruta.setLugares(lugares);
+			
+			Query queryTr = session.createQuery("FROM trayectoria where id_ruta = :idRuta", Trayectoria.class);
+			queryTr.setParameter("idRuta", idRuta);
+			trayectorias = queryTr.getResultList();
+			
+			ruta.setTrayectorias(trayectorias);
 			
 			codigo = Response.Status.OK.getStatusCode();
 			mensaje = "Se obtuvieron los datos";
@@ -74,11 +93,10 @@ public class ObtenerRutaResource {
 				sessionFactory.close();
 			}
 		}
-		
-		response.put("ruta", rutas);
+		int i = 0;
+		response.put("ruta" +  Integer.toString(i), ruta);
 		response.put("mensaje", mensaje);
 		
 		return Response.status(codigo).entity(response).build();
-
 	}
 }
